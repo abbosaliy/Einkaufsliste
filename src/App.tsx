@@ -32,16 +32,17 @@ function App() {
 
   function addProdukt() {
     if (liste.find((item) => item.name === produkt)) {
-      toast('Hinzufügen fehlgeschlagen', {
+      toast.error('Hinzufügen fehlgeschlagen', {
         description: 'Das Produkt ist bereits in der Einkaufsliste vorhanden.',
-        className: 'bg-red-600 text-white',
         action: {
           label: 'Löschen',
           onClick: () => {},
         },
       });
+
       return;
     }
+
     const newProdukt = {
       id: Date.now(),
       name: produkt,
@@ -53,15 +54,18 @@ function App() {
     setProdukt('');
     setCount(1);
   }
+
   function handleItem(id: number, value: boolean) {
-    setListe((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, bought: value } : item))
-    );
+    setListe((prev) => [
+      ...prev.filter((item) => item.id !== id),
+      { ...prev.find((item) => item.id === id)!, bought: value },
+    ]);
   }
 
   function handleDelete(id: number) {
     setListe((prev) => prev.filter((item) => item.id !== id));
   }
+
   return (
     <div className=" w-full max-w-lg flex mx-auto flex-col items-center justify-center p-8 gap-10">
       <h2 className="text-4xl font-bold">Einkaufsliste</h2>

@@ -13,9 +13,9 @@ type Props = {
 };
 
 function App() {
-  const [produkt, setProdukt] = useState('');
+  const [product, setProdukt] = useState('');
   const [count, setCount] = useState(1);
-  const [liste, setListe] = useState<Props[]>([]);
+  const [list, setListe] = useState<Props[]>([]);
 
   const LOCAL_STORAGE_KEY = 'produktListe';
 
@@ -27,11 +27,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(liste));
-  }, [liste]);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
+  }, [list]);
 
   function addProdukt() {
-    if (liste.find((item) => item.name === produkt)) {
+    if (list.find((item) => item.name === product)) {
       toast.error('Hinzufügen fehlgeschlagen', {
         description: 'Das Produkt ist bereits in der Einkaufsliste vorhanden.',
         action: {
@@ -45,12 +45,12 @@ function App() {
 
     const newProdukt = {
       id: Date.now(),
-      name: produkt,
+      name: product,
       quantity: count,
       bought: false,
     };
 
-    setListe([...liste, newProdukt]);
+    setListe([...list, newProdukt]);
     setProdukt('');
     setCount(1);
   }
@@ -74,7 +74,7 @@ function App() {
           <Input
             className="w-full"
             placeholder="Produkt eingeben"
-            value={produkt}
+            value={product}
             onChange={(e) => setProdukt(e.target.value)}
           />
           <Input
@@ -87,7 +87,7 @@ function App() {
 
         <Button
           className="w-full"
-          disabled={produkt.length < 1}
+          disabled={product.length < 1}
           onClick={addProdukt}
         >
           Eintrag Hinzufügen
@@ -95,7 +95,7 @@ function App() {
       </div>
 
       <div className="w-full flex flex-col gap-2">
-        {liste.map((item) => (
+        {list.map((item) => (
           <div
             key={item.id}
             className="w-full flex  p-5 items-center justify-between border-1 rounded-xl shadow-md "
